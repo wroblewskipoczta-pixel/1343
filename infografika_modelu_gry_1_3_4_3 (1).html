@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="pl" class="scroll-smooth">
+<head>
+  <!-- Selected Palette: Vibrant Electric Navy (Deep Navy #0f172a, Slate #1e293b, Cyan #06b6d4, Royal Blue #2563eb, Amber #f59e0b, Emerald #10b981) -->
+  <!-- Confirmation: NEITHER Mermaid JS NOR SVG graphics were used anywhere in this document. All visualizations utilize HTML5 Canvas via Chart.js or Tailwind CSS structured DOM elements. -->
+  <!-- Narrative Plan: 
+    1. Hero & Strategic Overview: High-impact KPI counters (Bayer 1-3-4-3 benchmarks, xGA, recoveries).
+    2. Tactical Structure & Ball Progression: Visualizing phase transformations (1-3-2 low build-up to 3-2-5 attacking block) and sector volume distribution.
+    3. Motor & GPS Profile Analysis: Multi-metric position comparisons (Distance, HSR, Sprint meterage) using Chart.js Canvas.
+    4. Defensive System & Gegenpressing Traps: Transition mechanics, 3-5s counter-pressing triggers, and Rest Defense (3+1 / 3+2).
+    5. Tactical Periodization & Morphocycle: Interactive weekly training loads (MD-4 to MD-1) mapped to specific tactical objectives.
+    6. Set Pieces & Goal Finalization Patterns: Cut-back efficiency vs pocket passes, hybrid marking setup.
+    7. Risk Matrix & Operational Recommendations: Vulnerability exploitation and coaching guidelines.
+  -->
+  <!-- Visualization Plan:
+    - Benchmark KPIs -> Goal: Inform -> Large HTML Stat Cards + Donut Chart (Possession & Line Breaking Accuracy).
+    - Motor Load by Position -> Goal: Compare -> Chart.js Radar Chart (GPS metrics across roles) & Grouped Bar Chart (HSR vs Sprint meters).
+    - Sector Overload Distribution -> Goal: Organize/Compare -> Chart.js Horizontal Bar Chart (Attacking sector density).
+    - Finalization Patterns -> Goal: Compare -> Chart.js Doughnut Chart (xG contribution by zone).
+    - Weekly Morphocycle -> Goal: Organize -> Responsive HTML Grid Matrix with interactive tabs.
+    - Defensive Counter-Pressing Trigger -> Goal: Process Flow -> Pure HTML/CSS styled sequence blocks.
+  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Gry 1-3-4-3 | Olimpia Grudziądz U-17</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .chart-container {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      height: 320px;
+      max-height: 380px;
+    }
+    @media (min-width: 768px) {
+      .chart-container {
+        height: 350px;
+      }
+    }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans antialiased custom-scrollbar leading-relaxed">
+
+  <!-- Sticky Top Navigation -->
+  <header class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-slate-950 text-sm">
+          OG
+        </div>
+        <span class="font-bold text-lg tracking-wide text-white">AKADEMIA OLIMPIA <span class="text-cyan-400">U-17</span></span>
+      </div>
+      <nav class="hidden md:flex space-x-6 text-xs font-semibold uppercase tracking-wider text-slate-400">
+        <a href="#overview" class="hover:text-cyan-400 transition-colors">Przegląd</a>
+        <a href="#offense" class="hover:text-cyan-400 transition-colors">Ofensywa</a>
+        <a href="#gps" class="hover:text-cyan-400 transition-colors">Profil GPS</a>
+        <a href="#defense" class="hover:text-cyan-400 transition-colors">Defensywa</a>
+        <a href="#periodization" class="hover:text-cyan-400 transition-colors">Morfocykl</a>
+        <a href="#finalization" class="hover:text-cyan-400 transition-colors">Finalizacja & SFG</a>
+      </nav>
+      <div class="text-xs bg-cyan-950 text-cyan-300 border border-cyan-800 px-3 py-1.5 rounded-full font-mono">
+        SYSTEM 1-3-4-3
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section & Key Performance Benchmarks -->
+  <section id="overview" class="relative py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <span class="text-cyan-400 font-mono text-xs font-semibold tracking-widest uppercase bg-cyan-950/60 border border-cyan-800/60 px-3 py-1 rounded-full inline-block mb-3">
+        Raport Taktyczno-Analityczny
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-4">
+        Model Gry w Systemie <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">1-3-4-3</span>
+      </h1>
+      <p class="text-slate-400 text-sm sm:text-base leading-relaxed">
+        Kompleksowa dezintegracja zachowań indywidualnych, grupowych i zespołowych dla kategorii wiekowej U-17. Synteza wzorców gry wysokiego poziomu (Bayer Leverkusen, Sporting CP, Atalanta) z metodologią Periodyzacji Taktycznej Akademii Olimpia Grudziądz.
+      </p>
+    </div>
+
+    <!-- Benchmark KPI Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      <div class="glass-card rounded-xl p-6 relative overflow-hidden">
+        <div class="text-xs font-mono text-slate-400 uppercase tracking-wider">Seria Serii Wzorcowej</div>
+        <div class="text-4xl font-black text-cyan-400 mt-2 mb-1">51 <span class="text-lg font-normal text-slate-300">meczów</span></div>
+        <p class="text-xs text-slate-400">Bez porażki w elicie (Bayer 1-3-4-3 benchmark) przy kontroli posiadania.</p>
+        <div class="absolute -right-2 -bottom-2 text-slate-800/30 text-7xl font-bold select-none">#1</div>
+      </div>
+
+      <div class="glass-card rounded-xl p-6 relative overflow-hidden">
+        <div class="text-xs font-mono text-slate-400 uppercase tracking-wider">Średnie Posiadanie Piłki</div>
+        <div class="text-4xl font-black text-blue-400 mt-2 mb-1">58%</div>
+        <p class="text-xs text-slate-400">Dominacja w sektorze środkowym i kreowanie przewagi w półprzestrzeniach.</p>
+        <div class="absolute -right-2 -bottom-2 text-slate-800/30 text-7xl font-bold select-none">%</div>
+      </div>
+
+      <div class="glass-card rounded-xl p-6 relative overflow-hidden">
+        <div class="text-xs font-mono text-slate-400 uppercase tracking-wider">Wskaźnik Defensywny xGA</div>
+        <div class="text-4xl font-black text-emerald-400 mt-2 mb-1">1.02</div>
+        <p class="text-xs text-slate-400">Najniższa oczekiwana liczba straconych goli dzięki strukturze Rest Defense 3+1/3+2.</p>
+        <div class="absolute -right-2 -bottom-2 text-slate-800/30 text-7xl font-bold select-none">xG</div>
+      </div>
+
+      <div class="glass-card rounded-xl p-6 relative overflow-hidden">
+        <div class="text-xs font-mono text-slate-400 uppercase tracking-wider">Odbiory w 3. Tercji</div>
+        <div class="text-4xl font-black text-amber-400 mt-2 mb-1">257</div>
+        <p class="text-xs text-slate-400">Wysoka skuteczność Gegenpressingu (zasada 3-5 sekund od momentu straty).</p>
+        <div class="absolute -right-2 -bottom-2 text-slate-800/30 text-7xl font-bold select-none">3T</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 1: Attacking Organization & Ball Progression -->
+  <section id="offense" class="py-12 border-t border-slate-800 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div class="mb-8">
+      <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3">1. Organizacja Gry w Ofensywie & Progresja</h2>
+      <p class="text-slate-400 text-sm max-w-4xl">
+        W fazie ataku system 1-3-4-3 płynnie transformuje się z niskiego otwarcia 1-3-2 (z bramkarzem i dwoma pivotami 6/8 tworzącymi tzw. <span class="text-cyan-300 font-semibold">Box Midfield</span>) do ekspansywnego 1-3-2-2-3 (3-2-5). Kluczem jest wywołanie pressingu rywala poprzez pauzę z piłką (<em>la pausa</em>) i otwieranie linii podań do dziesiątek operujących w półprzestrzeniach.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-8">
+      <!-- Interactive Chart: Sector Overload -->
+      <div class="glass-card rounded-xl p-6">
+        <h3 class="text-base font-bold text-white mb-2 flex items-center justify-between">
+          <span>Struktura Wolumenu Podaniowego i Przeładowań Strefowych</span>
+          <span class="text-xs font-mono bg-slate-800 text-cyan-400 px-2 py-0.5 rounded">Chart.js Canvas</span>
+        </h3>
+        <p class="text-xs text-slate-400 mb-4">
+          Wizualizacja natężenia akcji w poszczególnych korytarzach boiska. Zwraca uwagę akumulacja podań w półprzestrzeniach (35%) oraz na flankach przez zorientowanych wysoko wahadłowych.
+        </p>
+        <div class="chart-container">
+          <canvas id="sectorChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Tactical Breakdown Cards -->
+      <div class="space-y-4">
+        <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl p-5">
+          <div class="flex items-center space-x-3 mb-2">
+            <span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs">A</span>
+            <h4 class="font-bold text-white text-sm">Budowanie Niskie: "Box Midfield" & La Pausa</h4>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Stoperzy (3, 5, 2) współpracują z bramkarzem (1) i defensywnymi pomocnikami (6, 8). Cel: sprowokowanie doskoku pierwszej linii rywala. Stoper opóźnia podanie (pauza), zmuszając przeciwnika do opuszczenia strefy, po czym zagrywa piłkę łamiącą linie (line-breaking pass) do schodzącej dziesiątki.
+          </p>
+        </div>
+
+        <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl p-5">
+          <div class="flex items-center space-x-3 mb-2">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs">B</span>
+            <h4 class="font-bold text-white text-sm">Gra na Trzeciego (Third-Man Run)</h4>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Gdy linia podania bezpośredniego jest zamknięta, wykorzystuje się napastnika (9) jako "ściane". Podanie pionowe od stopera do nr 9, który odgrywa jednodotykowo (zbicie do progresji) do partnera (10/11 lub 8) wbiegającego przodem do bramki rywala.
+          </p>
+        </div>
+
+        <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl p-5">
+          <div class="flex items-center space-x-3 mb-2">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">C</span>
+            <h4 class="font-bold text-white text-sm">Asymetria i Obiegi (Overlap / Underlap)</h4>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Wahadłowi operują przy linii bocznej. Gdy półskrzydłowy (11) schodzi do środka, lewy wahadłowy (LWB) robi obieg zewnętrzny. Z kolei po prawej stronie, przy szerokim pozycjonowaniu RWB, skrajny obrońca (2) wykonuje wbiegnięcie wewnętrzne (underlap).
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Motor & Cognitive Profile Analysis (GPS Data) -->
+  <section id="gps" class="py-12 border-t border-slate-800 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-slate-950/40">
+    <div class="mb-8">
+      <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3">2. Profil Obciążeń Motorycznych i Kognitywnych (GPS)</h2>
+      <p class="text-slate-400 text-sm max-w-4xl">
+        Dla zawodników kategorii U-17 wdrożenie systemu 1-3-4-3 nakłada specyficzne wymagania motoryczne. Poniższe zestawienie bazuje na danych telemetrycznych GPS (mecz 90 min) i definiuje profil biegu o wysokiej intensywności (HSR >19.8 km/h) oraz sprintów (>25.2 km/h).
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      <!-- Radar Chart: Position Profiles -->
+      <div class="glass-card rounded-xl p-6">
+        <h3 class="text-base font-bold text-white mb-2 flex items-center justify-between">
+          <span>Porównanie Wskaźników Motorycznych po Pozycjach</span>
+          <span class="text-xs font-mono bg-slate-800 text-cyan-400 px-2 py-0.5 rounded">Chart.js Radar</span>
+        </h3>
+        <p class="text-xs text-slate-400 mb-4">
+          Wahadłowi wykazują najwyższe zapotrzebowanie na biegi HSR i sprinty na długich dystansach, podczas gdy defensywni pomocnicy dominują pod względem całkowitej objętości tlenowej (dystans całkowity).
+        </p>
+        <div class="chart-container">
+          <canvas id="radarGpsChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Grouped Bar Chart: HSR vs Sprint -->
+      <div class="glass-card rounded-xl p-6">
+        <h3 class="text-base font-bold text-white mb-2 flex items-center justify-between">
+          <span>Objętość Biegów Wysoce Eksplozywnych (Metry)</span>
+          <span class="text-xs font-mono bg-slate-800 text-cyan-400 px-2 py-0.5 rounded">Chart.js Bar</span>
+        </h3>
+        <p class="text-xs text-slate-400 mb-4">
+          Zestawienie średniego dystansu HSR (High-Speed Running) oraz dystansu sprintów w ujęciu pozycji boiskowych w systemie 1-3-4-3.
+        </p>
+        <div class="chart-container">
+          <canvas id="barGpsChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Positional Matrix Table -->
+    <div class="overflow-x-auto glass-card rounded-xl border border-slate-800">
+      <table class="w-full text-left text-xs text-slate-300">
+        <thead class="bg-slate-800/80 text-slate-200 uppercase font-mono border-b border-slate-700">
+          <tr>
+            <th class="p-3.5">Pozycja / Rola</th>
+            <th class="p-3.5">Dystans Ck. (km)</th>
+            <th class="p-3.5">Dystans HSR (m)</th>
+            <th class="p-3.5">Sprinty (m)</th>
+            <th class="p-3.5">Specyfika Obciążenia & Wyzwania Kognitywne</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-800">
+          <tr class="hover:bg-slate-800/40">
+            <td class="p-3.5 font-bold text-cyan-400">Środkowi Obrońcy (3, 5, 2)</td>
+            <td class="p-3.5 font-mono">9.0 – 11.5</td>
+            <td class="p-3.5 font-mono">800 – 1300</td>
+            <td class="p-3.5 font-mono">200 – 600</td>
+            <td class="p-3.5">Liczne krótkie przyspieszenia i hamowania. Skanowanie przestrzeni przy asekuracji bocznych korytarzy.</td>
+          </tr>
+          <tr class="hover:bg-slate-800/40">
+            <td class="p-3.5 font-bold text-blue-400">Defensywni Pomocnicy (6, 8)</td>
+            <td class="p-3.5 font-mono">11.5 – 13.5</td>
+            <td class="p-3.5 font-mono">1200 – 1800</td>
+            <td class="p-3.5 font-mono">400 – 700</td>
+            <td class="p-3.5">Najwyższy całkowity dystans. Wymagany ciągły ruch "box-to-box", kasowanie kontr i gra pod presją.</td>
+          </tr>
+          <tr class="hover:bg-slate-800/40">
+            <td class="p-3.5 font-bold text-amber-400">Wahadłowi (LWB, RWB)</td>
+            <td class="p-3.5 font-mono">11.0 – 12.5</td>
+            <td class="p-3.5 font-mono">1500 – 2400</td>
+            <td class="p-3.5 font-mono">600 – 1000</td>
+            <td class="p-3.5">Ekstremalne obciążenie HSR. Pokonywanie całego boiska; dynamiczne skoki pressingowe i powroty do linii 5.</td>
+          </tr>
+          <tr class="hover:bg-slate-800/40">
+            <td class="p-3.5 font-bold text-emerald-400">Ofensywni Pomocnicy (11, 10)</td>
+            <td class="p-3.5 font-mono">10.5 – 12.0</td>
+            <td class="p-3.5 font-mono">1800 – 2800</td>
+            <td class="p-3.5 font-mono">800 – 1300</td>
+            <td class="p-3.5">Eksplozywne zrywanie krycia, podania prostopadłe, błyskawiczny doskok w Gegenpressingu po stracie.</td>
+          </tr>
+          <tr class="hover:bg-slate-800/40">
+            <td class="p-3.5 font-bold text-purple-400">Środkowy Napastnik (9)</td>
+            <td class="p-3.5 font-mono">9.5 – 11.5</td>
+            <td class="p-3.5 font-mono">1200 – 1800</td>
+            <td class="p-3.5 font-mono">500 – 800</td>
+            <td class="p-3.5">Duża praca siłowa w zwarciu ze stoperami rywala. Wyznaczanie kierunku pressingu zespołu.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Section 3: Defensive Organization & Gegenpressing Traps -->
+  <section id="defense" class="py-12 border-t border-slate-800 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div class="mb-8">
+      <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3">3. Defensywa: Wysoki Pressing, Pułapki & Rest Defense</h2>
+      <p class="text-slate-400 text-sm max-w-4xl">
+        Działania obronne w 1-3-4-3 opierają się na odcięciu korytarza centralnego i wywarciu presji w bocznych sektorach (pułapki pressingowe). Po stracie piłki zespół realizuje **Gegenpressing (zasada 3-5 sekund)**, a w głębszej obronie formuje zwarty blok 1-5-4-1 lub 1-5-2-3.
+      </p>
+    </div>
+
+    <!-- Counter-Pressing Trigger Process Diagram (Structured HTML - NO SVG / NO MERMAID) -->
+    <div class="mb-10 glass-card rounded-xl p-6">
+      <h3 class="text-base font-bold text-white mb-4">Sekwencja Taktyczna: Mechanizm Pułapki Pressingowej w Sektorze Bocznym</h3>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        
+        <div class="bg-slate-800/90 border-l-4 border-cyan-500 rounded-r-lg p-4">
+          <div class="text-xs font-mono text-cyan-400 mb-1">KROK 01</div>
+          <div class="font-bold text-white text-sm mb-1">Blokada Centrum</div>
+          <p class="text-xs text-slate-300">Wąskie ustawienie przedniej trójki (9, 10, 11) zamyka linie podań do środkowych pomocników rywala.</p>
+        </div>
+
+        <div class="bg-slate-800/90 border-l-4 border-blue-500 rounded-r-lg p-4">
+          <div class="text-xs font-mono text-blue-400 mb-1">KROK 02: ZAPALNIK</div>
+          <div class="font-bold text-white text-sm mb-1">Zagranie do Bocznego Obrońcy</div>
+          <p class="text-xs text-slate-300">Rywale zmuszeni są do zagrania piłki na skrzydło. Lot piłki stanowi impuls (pressing trigger) do skoku.</p>
+        </div>
+
+        <div class="bg-slate-800/90 border-l-4 border-amber-500 rounded-r-lg p-4">
+          <div class="text-xs font-mono text-amber-400 mb-1">KROK 03</div>
+          <div class="font-bold text-white text-sm mb-1">Skok Wahadłowego & Asekuracja</div>
+          <p class="text-xs text-slate-300">Najbliższy wahadłowy doskakuje agresywnie. Skrajny obrońca (2/3) wychodzi wyżej za nim, asekurując linię.</p>
+        </div>
+
+        <div class="bg-slate-800/90 border-l-4 border-emerald-500 rounded-r-lg p-4">
+          <div class="text-xs font-mono text-emerald-400 mb-1">KROK 04</div>
+          <div class="font-bold text-white text-sm mb-1">Zamknięcie Klatki & Odbiór</div>
+          <p class="text-xs text-slate-300">Przeciwległy wahadłowy wchodzi w linię stoperów (tworząc 4 z tyłu). Środkowi pomocnicy rygielują sektor.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Rest Defense & Transition Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="glass-card rounded-xl p-6">
+        <h3 class="font-bold text-white text-base mb-3 text-cyan-400">Zabezpieczenie przed Kontratakiem (Rest Defense)</h3>
+        <p class="text-xs text-slate-300 leading-relaxed mb-4">
+          Podczas własnej fazy ataku drużyna zachowuje stałą strukturę obronną **3+1 (trzej obrońcy + jeden pivot) lub 3+2**. Stoperzy nie wyczekują pasywnie – utrzymują pozycję boczną i zamykają przestrzeń przed napastnikami rywala. W przypadku długiego wybicia rywala natychmiast skracają pole i zbierają tzw. "drugą piłkę" na połowie przeciwnika.
+        </p>
+        <div class="bg-slate-800 p-4 rounded-lg border border-slate-700 text-xs text-slate-400">
+          <strong class="text-white block mb-1">Reakcja A2D (Atak -> Obrona):</strong>
+          3-4 graczy znajdujących się najbliżej piłki natychmiast zakłada klatkę kontrpressingową (Gegenpressing) na 3-5 sekund. Brak odbioru wymusza błyskawiczny powrót pod linię piłki do bloku 1-5-4-1.
+        </div>
+      </div>
+
+      <div class="glass-card rounded-xl p-6">
+        <h3 class="font-bold text-white text-base mb-3 text-emerald-400">Przejście z Obrony do Ataku (Transition D2A)</h3>
+        <p class="text-xs text-slate-300 leading-relaxed mb-4">
+          Odzysk piłki w bloku średnim lub wysokim aktywuje szybkie podanie zdobywające (penetrujące). Mobilność półskrzydłowych (10, 11) pozwala na wykorzystanie odsłoniętych korytarzy bocznych za plecami wyciągniętych obrońców przeciwnika.
+        </p>
+        <div class="bg-slate-800 p-4 rounded-lg border border-slate-700 text-xs text-slate-400">
+          <strong class="text-white block mb-1">Automatyzm Akcji Kontrującej:</strong>
+          Maksymalnie 2-3 kontakty z piłką przed podaniem otwierającym. Napastnik (9) wiąże stoperów, otwierając przestrzeń dla wbiegających dziesiątek lub przeciwległego wahadłowego.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Tactical Periodization & Weekly Morphocycle -->
+  <section id="periodization" class="py-12 border-t border-slate-800 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-slate-950/40">
+    <div class="mb-8">
+      <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3">4. Wdrażanie Modelu: Morfocykl Treningowy U-17</h2>
+      <p class="text-slate-400 text-sm max-w-4xl">
+        Aplikacja modelu gry 1-3-4-3 w Akademii Olimpia Grudziądz odbywa się według metodologii **Periodyzacji Taktycznej**. Motoryka rozwijana jest wyłącznie poprzez specyficzne środowisko gier taktycznych, dopasowanych do dni tygodnia (cykl meczowy Sobota-Sobota).
+      </p>
+    </div>
+
+    <!-- Morphocycle Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      
+      <div class="glass-card rounded-xl p-5 border-t-4 border-cyan-500">
+        <div class="flex justify-between items-center mb-2">
+          <span class="font-mono text-cyan-400 text-xs font-bold">MD-4 (Środa)</span>
+          <span class="text-[10px] bg-cyan-950 text-cyan-300 px-2 py-0.5 rounded font-mono">SIŁA</span>
+        </div>
+        <h3 class="font-bold text-white text-sm mb-2">Siła & Złożoność Napięć</h3>
+        <p class="text-xs text-slate-400 mb-3">Małe przestrzenie, maksymalna intensywność skurczów ekscentrycznych, przyspieszenia i hamowania.</p>
+        <div class="bg-slate-800 p-3 rounded text-xs text-slate-300">
+          <strong>Główny Temat:</strong> Mikro-taktyka, Gegenpressing, reakcja w 3-5s.<br>
+          <strong>Ćwiczenie:</strong> Gra Pozycyjna 4v4 + 2N z natychmiastowym doskokiem po stracie na małym obszarze (30x25m).
+        </div>
+      </div>
+
+      <div class="glass-card rounded-xl p-5 border-t-4 border-blue-500">
+        <div class="flex justify-between items-center mb-2">
+          <span class="font-mono text-blue-400 text-xs font-bold">MD-3 (Czwartek)</span>
+          <span class="text-[10px] bg-blue-950 text-blue-300 px-2 py-0.5 rounded font-mono">WYTRZYMAŁOŚĆ</span>
+        </div>
+        <h3 class="font-bold text-white text-sm mb-2">Wytrzymałość Specyficzna</h3>
+        <p class="text-xs text-slate-400 mb-3">Duże przestrzenie boiskowe, długi czas obciążenia aerobowego i wysoki wolumen HSR.</p>
+        <div class="bg-slate-800 p-3 rounded text-xs text-slate-300">
+          <strong>Główny Temat:</strong> Organizacja ofensywna 3-2-5, przesunięcie bloku.<br>
+          <strong>Ćwiczenie:</strong> Gra 10v10 lub 6x6+2N+2BR na dużym boisku z akcentem na obiegi wahadłowych i zmianę centrum.
+        </div>
+      </div>
+
+      <div class="glass-card rounded-xl p-5 border-t-4 border-amber-500">
+        <div class="flex justify-between items-center mb-2">
+          <span class="font-mono text-amber-400 text-xs font-bold">MD-2 (Piątek)</span>
+          <span class="text-[10px] bg-amber-950 text-amber-300 px-2 py-0.5 rounded font-mono">SZYBKOŚĆ</span>
+        </div>
+        <h3 class="font-bold text-white text-sm mb-2">Szybkość & Decyzyjność</h3>
+        <p class="text-xs text-slate-400 mb-3">Brak zmęczenia, krótki czas trwania z pełną regeneracją, maksymalna dynamika.</p>
+        <div class="bg-slate-800 p-3 rounded text-xs text-slate-300">
+          <strong>Główny Temat:</strong> Finalizacja z półprzestrzeni i wbiegnięcia cut-back.<br>
+          <strong>Ćwiczenie:</strong> Szybkie gry falowe (3v2, 4v3) oraz "shadow play" z wykończeniem z kieszeni.
+        </div>
+      </div>
+
+      <div class="glass-card rounded-xl p-5 border-t-4 border-emerald-500">
+        <div class="flex justify-between items-center mb-2">
+          <span class="font-mono text-emerald-400 text-xs font-bold">MD-1 (Sobota)</span>
+          <span class="text-[10px] bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded font-mono">AKTYWACJA</span>
+        </div>
+        <h3 class="font-bold text-white text-sm mb-2">Aktywacja & SFG</h3>
+        <p class="text-xs text-slate-400 mb-3">Bardzo niska intensywność fizyczna, maksymalny bodziec kognitywny i świeżość mentalna.</p>
+        <div class="bg-slate-800 p-3 rounded text-xs text-slate-300">
+          <strong>Główny Temat:</strong> Taktyka stałych fragmentów gry i pozycjonowanie.<br>
+          <strong>Ćwiczenie:</strong> Schematy rzutów rożnych/wolnych, odprawa taktyczna i symulacja komunikacji w obronie hybrydowej.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 5: Goal Finalization & Set Pieces (SFG) -->
+  <section id="finalization" class="py-12 border-t border-slate-800 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div class="mb-8">
+      <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3">5. Finalizacja & Taktyczna Organizacja SFG</h2>
+      <p class="text-slate-400 text-sm max-w-4xl">
+        Wysokie dośrodkowania górą wykazują stosunkowo niską efektywność xG. System 1-3-4-3 promuje płaskie podania z linii końcowej (**cut-back**) oraz zagrań rotacyjnych w pole karne. Dodatkowo, obecność 3 stoperów stwarza znaczną przewagę w Stałych Fragmentach Gry (SFG), stanowiących 30-40% goli.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      <!-- Donut Chart: Goal Sources -->
+      <div class="glass-card rounded-xl p-6">
+        <h3 class="text-base font-bold text-white mb-2 flex items-center justify-between">
+          <span>Struktura Źródeł Generowanego xG / Bramek</span>
+          <span class="text-xs font-mono bg-slate-800 text-cyan-400 px-2 py-0.5 rounded">Chart.js Donut</span>
+        </h3>
+        <p class="text-xs text-slate-400 mb-4">
+          Udział poszczególnych wzorców rozegrania w kreowaniu wykończeń strzeleckich w zespole U-17.
+        </p>
+        <div class="chart-container">
+          <canvas id="donutGoalChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Tactical SFG & Cut-Back Details -->
+      <div class="space-y-4">
+        <div class="glass-card rounded-xl p-5 border-l-4 border-cyan-400">
+          <h4 class="font-bold text-white text-sm mb-1">Wsteczne Podania z Linowej Końcowej (Cut-back)</h4>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Po wygraniu pojedynku na skrzydle przez wahadłowego lub wyjściu w korytarz, zagranie kierowane jest płasko na 11-14 metr. Obszar ten jest atakowany w drugim tempie przez zawodników z drugiej linii (6, 8 lub drugą dziesiątkę), co drastycznie podnosi wskaźnik xG.
+          </p>
+        </div>
+
+        <div class="glass-card rounded-xl p-5 border-l-4 border-amber-400">
+          <h4 class="font-bold text-white text-sm mb-1">SFG w Ofensywie: Przeładowanie & Płaskie Dogrania</h4>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Krótkie rozegranie rzutu rożnego (2v1 na skrzydle) wyciąga defensorów rywala z "szesnastki", zwalniając przestrzeń na 5-11 metrze dla środkowych obrońców (3, 5, 2) wykonujących krzyżujące się nabiegi. Alternatywą jest płaskie dogranie na skraj pola karnego pod uderzenie z pierwszej piłki.
+          </p>
+        </div>
+
+        <div class="glass-card rounded-xl p-5 border-l-4 border-emerald-400">
+          <h4 class="font-bold text-white text-sm mb-1">SFG w Defensywie: Krycie Hybrydowe (Zonal-Hybrid)</h4>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Połączenie krycia strefowego z indywidualnym. Trzej najlepsi obrońcy grają ścisłym plastrem z fizycznym kontaktem na kluczowych graczy rywala. Pozostali gracze zabezpieczają strefowo krótki słupek i piąty metr, eliminując bezpańskie "drugie piłki".
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6: Risk Matrix & Coaching Recommendations -->
+  <section id="risks" class="py-12 border-t border-slate-800 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-slate-950/40 mb-12">
+    <div class="mb-8">
+      <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3">6. Analiza Ryzyk Taktycznych & Rekomendacje Operacyjne</h2>
+      <p class="text-slate-400 text-sm max-w-4xl">
+        Każda struktura taktyczna posiada naturalne luki. W systemie 1-3-4-3 kluczowe jest świadome zarządzanie ryzykiem odsłoniętych korytarzy bocznych oraz przeciwdziałanie przeciążeniu środka pola przez zespoły grające np. w 1-4-3-3 lub rombie 1-4-4-2.
+      </p>
+    </div>
+
+    <!-- Risk vs Mitigation Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      
+      <div class="glass-card rounded-xl p-5 border-t-2 border-red-500">
+        <div class="text-xs font-mono text-red-400 uppercase mb-1">Ryzyko #1</div>
+        <h3 class="font-bold text-white text-sm mb-2">Przestrzeń za Plecami Wahadłowych</h3>
+        <p class="text-xs text-slate-400 mb-3">Szybcy skrzydłowi rywala eksploatują opuszczone sektory boczne tuż po przejęciu piłki.</p>
+        <div class="bg-slate-900/80 p-3 rounded border border-slate-800 text-xs text-slate-300">
+          <strong class="text-cyan-400 block mb-1">Środek Zaradczy:</strong>
+          Szerokie profilowanie i agresywna asekuracja ze strony skrajnych obrońców (3 i 2). Skuteczna struktura Rest Defense (3+1 / 3+2) opóźniająca atak.
+        </div>
+      </div>
+
+      <div class="glass-card rounded-xl p-5 border-t-2 border-amber-500">
+        <div class="text-xs font-mono text-amber-400 uppercase mb-1">Ryzyko #2</div>
+        <h3 class="font-bold text-white text-sm mb-2">Zdominowanie Środka Pola (Midfield Overload)</h3>
+        <p class="text-xs text-slate-400 mb-3">Rywale z 3 lub 4 pomocnikami w centrum mogą zdominować dwójkę pivotów (6, 8).</p>
+        <div class="bg-slate-900/80 p-3 rounded border border-slate-800 text-xs text-slate-300">
+          <strong class="text-cyan-400 block mb-1">Środek Zaradczy:</strong>
+          Dyscyplina taktyczna dziesiątek (10, 11), które w obronie obniżają pozycję i tworzą czwórkę w linii pomocy (płynna transformacja w 1-5-4-1).
+        </div>
+      </div>
+
+      <div class="glass-card rounded-xl p-5 border-t-2 border-blue-500">
+        <div class="text-xs font-mono text-blue-400 uppercase mb-1">Ryzyko #3</div>
+        <h3 class="font-bold text-white text-sm mb-2">Wykończenie Fizyczne Wahadłowych</h3>
+        <p class="text-xs text-slate-400 mb-3">Wysoki wolumen biegowy (HSR/Sprint) prowadzi do spadku dynamiki w końcówkach meczu.</p>
+        <div class="bg-slate-900/80 p-3 rounded border border-slate-800 text-xs text-slate-300">
+          <strong class="text-cyan-400 block mb-1">Środek Zaradczy:</strong>
+          Zarządzanie czasem przy piłce (odpoczynek w posiadaniu), planowe zmiany rotacyjne w 60-70 minucie oraz dedykowany trening wytrzymałości.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Final Summary Box -->
+    <div class="glass-card rounded-xl p-6 border border-cyan-500/30">
+      <h3 class="font-bold text-white text-base mb-2 text-cyan-400">Podsumowanie i Kluczowe Wnioski Szkoleniowe</h3>
+      <ul class="list-disc list-inside text-xs text-slate-300 space-y-2 leading-relaxed">
+        <li><strong>Płynność ponad sztywność:</strong> Ustawienie 1-3-4-3 to elastyczny pancerz. Zawodnicy U-17 muszą rozumieć przestrzeń, a nie sztywne pozycje.</li>
+        <li><strong>Kognitywne wyzwalacze nawyków:</strong> Automatyzmy w reagowaniu (Gegenpressing 3-5s, skok pressingowy wahadłowego) obniżają obciążenie kognitywne w meczu.</li>
+        <li><strong>Metodologiczna integralność:</strong> Trening w strukturze Morfocyklu gwarantuje symultaniczny rozwój taktyczny, motoryczny i mentalny.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4">
+      Model Gry U-17 | Akademia Piłkarska Olimpia Grudziądz &copy; 2026. Wszelkie prawa zastrzeżone.
+    </div>
+  </footer>
+
+  <!-- Chart.js Setup Script -->
+  <script>
+    // Mandatory Label Wrapping Logic for strings > 16 chars
+    function wrapLabel(str, maxLen = 16) {
+      if (typeof str !== 'string' || str.length <= maxLen) return str;
+      const words = str.split(' ');
+      const lines = [];
+      let currentLine = '';
+      words.forEach(word => {
+        if ((currentLine + (currentLine ? ' ' : '') + word).length > maxLen) {
+          if (currentLine) lines.push(currentLine);
+          currentLine = word;
+        } else {
+          currentLine += (currentLine ? ' ' : '') + word;
+        }
+      });
+      if (currentLine) lines.push(currentLine);
+      return lines;
+    }
+
+    // Common Chart.js Tooltip Callback Config as requested
+    const commonTooltipPlugin = {
+      tooltip: {
+        callbacks: {
+          title: function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            } else {
+              return label;
+            }
+          }
+        }
+      }
+    };
+
+    // Chart 1: Sector Overload (Horizontal Bar Chart)
+    const rawSectorLabels = [
+      'Lewe Skrzydło (Wahadłowy)',
+      'Półprzestrzeń Lewa (11)',
+      'Korytarz Centralny (Pivot 6/8)',
+      'Półprzestrzeń Prawa (10)',
+      'Prawe Skrzydło (Wahadłowy)'
+    ];
+    const wrappedSectorLabels = rawSectorLabels.map(l => wrapLabel(l, 16));
+
+    const ctxSector = document.getElementById('sectorChart').getContext('2d');
+    new Chart(ctxSector, {
+      type: 'bar',
+      data: {
+        labels: wrappedSectorLabels,
+        datasets: [{
+          label: '% Aktywnego Wolumenu Akcji',
+          data: [25, 35, 15, 30, 20],
+          backgroundColor: [
+            'rgba(6, 182, 212, 0.8)',
+            'rgba(37, 99, 235, 0.8)',
+            'rgba(16, 185, 129, 0.8)',
+            'rgba(245, 158, 11, 0.8)',
+            'rgba(6, 182, 212, 0.8)'
+          ],
+          borderColor: '#0f172a',
+          borderWidth: 1,
+          borderRadius: 4
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          ...commonTooltipPlugin,
+          legend: { display: false }
+        },
+        scales: {
+          x: {
+            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+            ticks: { color: '#94a3b8', font: { size: 10 } },
+            max: 40
+          },
+          y: {
+            grid: { display: false },
+            ticks: { color: '#cbd5e1', font: { size: 10 } }
+          }
+        }
+      }
+    });
+
+    // Chart 2: GPS Radar Chart by Position
+    const rawRadarLabels = [
+      'Dystans Ck (km)',
+      'Biegi HSR (>19.8 km/h)',
+      'Sprinty (>25 km/h)',
+      'Pojedynki Siłowe',
+      'Obciążenie Kognitywne'
+    ];
+    const wrappedRadarLabels = rawRadarLabels.map(l => wrapLabel(l, 16));
+
+    const ctxRadar = document.getElementById('radarGpsChart').getContext('2d');
+    new Chart(ctxRadar, {
+      type: 'radar',
+      data: {
+        labels: wrappedRadarLabels,
+        datasets: [
+          {
+            label: 'Wahadłowi (WB)',
+            data: [85, 95, 90, 60, 80],
+            borderColor: '#06b6d4',
+            backgroundColor: 'rgba(6, 182, 212, 0.2)',
+            pointBackgroundColor: '#06b6d4',
+            borderWidth: 2
+          },
+          {
+            label: 'Pomocnicy (6/8)',
+            data: [98, 70, 55, 75, 90],
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+            pointBackgroundColor: '#3b82f6',
+            borderWidth: 2
+          },
+          {
+            label: 'Ofensywni (10/11)',
+            data: [75, 90, 85, 50, 95],
+            borderColor: '#f59e0b',
+            backgroundColor: 'rgba(245, 158, 11, 0.2)',
+            pointBackgroundColor: '#f59e0b',
+            borderWidth: 2
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          ...commonTooltipPlugin,
+          legend: {
+            position: 'top',
+            labels: { color: '#cbd5e1', font: { size: 10 } }
+          }
+        },
+        scales: {
+          r: {
+            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+            pointLabels: { color: '#94a3b8', font: { size: 9 } },
+            ticks: { display: false, max: 100 }
+          }
+        }
+      }
+    });
+
+    // Chart 3: GPS Bar Chart (HSR vs Sprint Meters)
+    const rawBarLabels = [
+      'Środkowi Obrońcy',
+      'Defensywni Pomocnicy',
+      'Wahadłowi',
+      'Ofensywni Pomocnicy',
+      'Środkowy Napastnik'
+    ];
+    const wrappedBarLabels = rawBarLabels.map(l => wrapLabel(l, 16));
+
+    const ctxBar = document.getElementById('barGpsChart').getContext('2d');
+    new Chart(ctxBar, {
+      type: 'bar',
+      data: {
+        labels: wrappedBarLabels,
+        datasets: [
+          {
+            label: 'Dystans HSR (m)',
+            data: [1050, 1500, 1950, 2300, 1500],
+            backgroundColor: 'rgba(6, 182, 212, 0.8)',
+            borderRadius: 4
+          },
+          {
+            label: 'Dystans Sprintów (m)',
+            data: [400, 550, 800, 1050, 650],
+            backgroundColor: 'rgba(245, 158, 11, 0.8)',
+            borderRadius: 4
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          ...commonTooltipPlugin,
+          legend: {
+            position: 'top',
+            labels: { color: '#cbd5e1', font: { size: 10 } }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            ticks: { color: '#cbd5e1', font: { size: 9 } }
+          },
+          y: {
+            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+            ticks: { color: '#94a3b8', font: { size: 10 } }
+          }
+        }
+      }
+    });
+
+    // Chart 4: Goal Sources (Donut Chart)
+    const rawDonutLabels = [
+      'Cut-back z linii bocznej',
+      'Podania w kieszeń obrony',
+      'Stałe Fragmenty Gry (SFG)',
+      'Dośrodkowania z półprzestrzeni',
+      'Uderzenia z dystansu'
+    ];
+    const wrappedDonutLabels = rawDonutLabels.map(l => wrapLabel(l, 16));
+
+    const ctxDonut = document.getElementById('donutGoalChart').getContext('2d');
+    new Chart(ctxDonut, {
+      type: 'doughnut',
+      data: {
+        labels: wrappedDonutLabels,
+        datasets: [{
+          data: [35, 25, 20, 12, 8],
+          backgroundColor: [
+            '#06b6d4',
+            '#3b82f6',
+            '#f59e0b',
+            '#10b981',
+            '#8b5cf6'
+          ],
+          borderColor: '#0f172a',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          ...commonTooltipPlugin,
+          legend: {
+            position: 'right',
+            labels: { color: '#cbd5e1', font: { size: 10 }, boxWidth: 12 }
+          }
+        },
+        cutout: '65%'
+      }
+    });
+  </script>
+</body>
+</html>
